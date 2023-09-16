@@ -1,3 +1,0 @@
-C:/Users/Tim/source/repos/math_interpriter/out/build/x64-debug/CMakeFiles/math_interpriter.dir
-C:/Users/Tim/source/repos/math_interpriter/out/build/x64-debug/CMakeFiles/edit_cache.dir
-C:/Users/Tim/source/repos/math_interpriter/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
