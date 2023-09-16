@@ -1,3 +1,10 @@
 # ninja log v5
 1	848	7165982746141370	CMakeFiles/math_interpriter.dir/main.cpp.obj	1b86f895a4d4a182
 849	1023	7165982747748540	math_interpriter.exe	bcd6bff1ebe2d101
+2	865	7166106015351602	CMakeFiles/math_interpriter.dir/src/main.cpp.obj	b4cca9cac8b2579
+5	870	7166106015432151	CMakeFiles/math_interpriter.dir/src/token.cpp.obj	caeec5add6a54765
+870	983	7166106016336204	math_interpriter.exe	7c90ae99ec8be039
+8	716	7166110255349510	CMakeFiles/math_interpriter.dir/src/main.cpp.obj	b4cca9cac8b2579
+716	845	7166110256435272	math_interpriter.exe	7c90ae99ec8be039
+8	598	7166110443316128	CMakeFiles/math_interpriter.dir/src/main.cpp.obj	b4cca9cac8b2579
+599	692	7166110444022338	math_interpriter.exe	7c90ae99ec8be039
