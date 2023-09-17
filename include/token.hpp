@@ -2,6 +2,7 @@
 
 #include <string>
 #include <iostream>
+#include <cctype>
 
 enum class TokenType {
 	Error, EoF,
@@ -24,8 +25,6 @@ public:
 
 	void print() const;
 
-	void setType(TokenType t);
-	void setLexeme(const std::string& l);
 	TokenType getType() const;
 	std::string getLexeme() const;
 

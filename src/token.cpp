@@ -1,18 +1,15 @@
 #include "token.hpp"
 
+/*Constructor*/
 Token::Token(TokenType t, const std::string& l) : type_(t), lexeme_(l) {};
 
+/*Public*/
 void Token::print() const{
     std::cout << "Token Type: " << tokenTypeToString(type_);
     std::cout << "   Lexeme: " << lexeme_ << std::endl;
 }
-
-void Token::setType(TokenType t) {type_ = t;}
-void Token::setLexeme(const std::string& l) {lexeme_ = l;}
-
 TokenType Token::getType() const {return type_;}
 std::string Token::getLexeme() const {return lexeme_;}
-
 std::string Token::tokenTypeToString(TokenType t) {
     switch (t) {
         case TokenType::Error: return "Error";
