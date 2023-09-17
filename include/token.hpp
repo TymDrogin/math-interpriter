@@ -26,15 +26,12 @@ public:
 
 	void setType(TokenType t);
 	void setLexeme(const std::string& l);
-	TokenType getType();
-	std::string getLexeme();
+	TokenType getType() const;
+	std::string getLexeme() const;
 
 	static std::string tokenTypeToString(TokenType t);
 
 private:
-	TokenType type;
-	std::string lexeme;
-
+	TokenType type_;
+	std::string lexeme_;
 };
-
-

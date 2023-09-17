@@ -9,6 +9,7 @@ int main()
 	Token token(type, lexeme);
 	
 	std::cout << "Token class size in bytes: " << sizeof(Token) << std::endl;
-	std::cout << "Token size in bytes: " << sizeof(token);
+	std::cout << "Token size in bytes: " << sizeof(token) << std::endl;
+
 
 }
