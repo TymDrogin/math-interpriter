@@ -13,7 +13,7 @@ std::vector<Token> Lexer::tokenize() {
 		token = nextToken();
 	}
 
-	tokens.push_back(token); //push Eof token 
+	tokens.push_back(token); //push EoF token 
 	setPosition(0); //reset position to allow multiple tokenize() calls
 	return tokens;
 };
@@ -38,7 +38,7 @@ Token Lexer::nextToken() {
 	char c = getCurrentChar();
 
 	if (c == '\0') {
-		return Token(TokenType::EoF, "\0"); // Return an EoF token
+		return Token(TokenType::EoF, "EOF"); // Return an EoF token
 	}
 
 	switch(c) {
@@ -50,7 +50,7 @@ Token Lexer::nextToken() {
 			return Token(TokenType::Minus, "-");
 		case '*':
 			advance();
-			return Token(TokenType::Star, "*");
+			return parseStar();
 		case '/':
 			advance();
 			return Token(TokenType::Slash, "/");
@@ -71,16 +71,33 @@ Token Lexer::nextToken() {
 				return parseIdentyfier();
 			}
 	}
-	return Token(TokenType::Error, "Unexpected character");
+	return errorToken();
+}
+Token Lexer::parseStar() {
+	/*To support both^ and **notation for the pow we need to check
+	if we have two stars in a row. If they are then we return a caret token*/
+
+	skipWhitespace();
+	if (getCurrentChar() != '*') {
+		return Token(TokenType::Star, "*");
+	}
+	else {
+		advance();
+		return Token(TokenType::Caret, "^");
+	}
 }
 Token Lexer::parseNumber() {
 	std::string lexeme;
 
+	auto readWhileIsDigit = [&]() {
+		while (isdigit(getCurrentChar())) {
+			lexeme += getCurrentChar();
+			advance();
+		}
+	};
+
 	// Read integer part
-	while (isdigit(getCurrentChar())) {
-		lexeme += getCurrentChar();
-		advance();
-	}
+	readWhileIsDigit();
 
 	// Check for a decimal point
 	if (getCurrentChar() == '.') {
@@ -88,12 +105,21 @@ Token Lexer::parseNumber() {
 		advance();
 
 		// Read decimal part
-		while (isdigit(getCurrentChar())) {
+		readWhileIsDigit();
+	}
+	// Scientyfic notation part: 12.4(e10), e-2, etc
+	if (getCurrentChar() == 'e'|| getCurrentChar() == 'E') {
+		lexeme += getCurrentChar();
+		advance();
+
+		// Read sign
+		if (getCurrentChar() == '-' || getCurrentChar() == '+') {
 			lexeme += getCurrentChar();
 			advance();
 		}
+		// Read exponent 
+		readWhileIsDigit();
 	}
-
 	Token token(TokenType::Number, lexeme);
 	return token;
 }
@@ -106,4 +132,9 @@ Token Lexer::parseIdentyfier() {
 	}
 	Token token(TokenType::Ident, lexeme);
 	return token;
+}
+Token Lexer::errorToken() {
+	Token error(TokenType::Error, std::string(1, getCurrentChar()));
+	advance();
+	return error;
 }

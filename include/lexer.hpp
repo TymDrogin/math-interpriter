@@ -1,8 +1,9 @@
 #pragma once
 
+#include "token.hpp"
 #include <vector>
 #include <cctype>
-#include "token.hpp"
+
 
 class Lexer
 {
@@ -16,13 +17,14 @@ private:
 	int position_; //current lexing position
 
 	void advance(); //increment position by 1
-	void skipWhitespace();
 
+	void skipWhitespace();
 	char getCurrentChar() const;
 	void setPosition(int p);
 
 	Token nextToken(); 
+	Token parseStar();
 	Token parseNumber();
 	Token parseIdentyfier();
-	
+	Token errorToken();
 };
