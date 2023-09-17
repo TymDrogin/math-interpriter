@@ -5,8 +5,8 @@ Token::Token(TokenType t, const std::string& l) : type_(t), lexeme_(l) {};
 
 /*Public*/
 void Token::print() const{
-    std::cout << "Token Type: " << tokenTypeToString(type_);
-    std::cout << "   Lexeme: " << lexeme_ << std::endl;
+    std::cout << "Type: " << tokenTypeToString(type_);
+    std::cout << ", Value: " << lexeme_ << std::endl;
 }
 TokenType Token::getType() const {return type_;}
 std::string Token::getLexeme() const {return lexeme_;}
@@ -25,5 +25,12 @@ std::string Token::tokenTypeToString(TokenType t) {
         case TokenType::CloseParenthesis: return "Close Parenthesis";
         case TokenType::Comma: return "Comma";
         default: return "Unknown";
+    }
+}
+
+/*Functions*/
+void printTokens(std::vector<Token> tokens) {
+    for (Token t : tokens) {
+        t.print();
     }
 }

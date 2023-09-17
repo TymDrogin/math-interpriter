@@ -3,13 +3,13 @@
 
 int main()
 {
-	TokenType type = TokenType::Number; // Replace with the appropriate TokenType
-	std::string lexeme = "123"; // Replace with the lexeme you want
+	std::string input = "2 + 4*(5 - 3.5)";
 
-	Token token(type, lexeme);
-	
-	std::cout << "Token class size in bytes: " << sizeof(Token) << std::endl;
-	std::cout << "Token size in bytes: " << sizeof(token) << std::endl;
+	Lexer myLexer(input);
+
+	std::vector<Token> tokens = myLexer.tokenize();
+
+	printTokens(tokens);
 
 
 }

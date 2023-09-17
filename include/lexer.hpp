@@ -11,11 +11,6 @@ public:
 
 	std::vector<Token> tokenize();
 
-	int getPosition() const;
-	std::string getInput() const;
-	char getCurrentChar() const;
-
-
 private:
 	const std::string& input_; // input string in format "2+3*(4-2)"
 	int position_; //current lexing position
@@ -23,8 +18,8 @@ private:
 	void advance(); //increment position by 1
 	void skipWhitespace();
 
+	char getCurrentChar() const;
 	void setPosition(int p);
-
 
 	Token nextToken(); 
 	Token parseNumber();

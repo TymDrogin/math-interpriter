@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <cctype>
+#include <vector>
 
 enum class TokenType {
 	Error, EoF,
@@ -34,3 +35,5 @@ private:
 	TokenType type_;
 	std::string lexeme_;
 };
+
+void printTokens(std::vector<Token> tokens);
