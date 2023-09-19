@@ -17,30 +17,43 @@ enum class BinaryOperatorNodeType {
 enum class FunctionNodeType {
     Sin, Cos,
     Sqrt, Ln, 
-
 };
 
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
+
 };
 
 class NumberNode : public ASTNode {
 public:
     NumberNode(const Token &token);
+    NumberNode(const double value);
 
-    const Token token;
+private:
+    const double value_;
 };
 
 class UnaryOperationNode : public ASTNode {
 public:
     UnaryOperationNode(const Token& token);
+    UnaryOperationNode(const BinaryOperatorNodeType type, ASTNode *operand);
 
+
+private:
+    const BinaryOperatorNodeType _type;
+    std::unique_ptr<ASTNode> _operand;
 };
 
 class BinaryOperationNode : public ASTNode {
 public:
     BinaryOperationNode(const Token& token, ASTNode* left, ASTNode* right);
+    BinaryOperationNode(const BinaryOperatorNodeType type, ASTNode* left, ASTNode* right);
+
+private:
+    const BinaryOperatorNodeType _type;
+    std::unique_ptr<ASTNode> _left;
+    std::unique_ptr<ASTNode> _right;
 };
 
 //class ErrorNode : public ASTNode {
