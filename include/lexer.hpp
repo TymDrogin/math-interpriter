@@ -14,8 +14,8 @@ public:
 	void setInput(const std::string& input); //sets new string to tokenize
 
 private:
-	std::string input_; // input string in format "2+3*(4-2)"; // input string in format "2+3*(4-2)"
-	int position_; //current lexing position
+	std::string _input; // input string in format "2+3*(4-2)"; // input string in format "2+3*(4-2)"
+	int _position; //current lexing position
 
 	void advance(); //increment position by 1
 	void skipWhitespace();

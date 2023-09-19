@@ -1,6 +1,6 @@
 #include "parser.hpp"
 /* Constructor */
-Parser::Parser(std::vector<Token>& tokens) : tokens_(tokens), position_(0) {};
+Parser::Parser(std::vector<Token>& tokens) : _tokens(tokens), _position(0) {};
 
 /* Public*/
 
@@ -25,7 +25,7 @@ std::vector<Token> Parser::toRPN(std::vector<Token> tokens) {
 
 }
 
-void Parser::setTokensToParse(std::vector<Token> tokens) { tokens_ = tokens; position_ = 0;};
+void Parser::setTokensToParse(std::vector<Token> tokens) { _tokens = tokens; _position = 0;};
 
 
 /* Privat*/
@@ -36,10 +36,10 @@ bool Parser::isValidTokenSequence()
 }
 void Parser::filterErrorTokens(){
 	// Iterate through the tokens and remove any tokens that are considered errors
-	auto it = std::remove_if(tokens_.begin(), tokens_.end(), [](const Token& token) {
+	auto it = std::remove_if(_tokens.begin(), _tokens.end(), [](const Token& token) {
 		return token.getType() == TokenType::Error;
 		});
 
 	// Erase the removed tokens
-	tokens_.erase(it, tokens_.end());
+	_tokens.erase(it, _tokens.end());
 }

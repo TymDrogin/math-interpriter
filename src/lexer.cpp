@@ -1,7 +1,7 @@
 #include "lexer.hpp"
 
 /*Constructor*/
-Lexer::Lexer(std::string& input) : input_(input), position_(0) {};
+Lexer::Lexer(std::string& input) : _input(input), _position(0) {};
 
 /*Public*/
 std::vector<Token> Lexer::tokenize() {
@@ -20,18 +20,18 @@ std::vector<Token> Lexer::tokenize() {
 
 /*Private*/
 void Lexer::advance() {
-	position_++;
+	_position++;
 }
 void Lexer::skipWhitespace() {
-	while (position_ < input_.length() && isspace(input_[position_])) {
+	while (_position < _input.length() && isspace(_input[_position])) {
 		advance();
 	}
 }
 char Lexer::getCurrentChar() const {
-	return input_[position_];
+	return _input[_position];
 };
-void Lexer::setPosition(int p) {position_ = p;}
-void Lexer::setInput(const std::string& input) {input_ = input;};
+void Lexer::setPosition(int p) {_position = p;}
+void Lexer::setInput(const std::string& input) {_input = input;};
 
 Token Lexer::nextToken() {
 	skipWhitespace();

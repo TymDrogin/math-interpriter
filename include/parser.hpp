@@ -31,10 +31,10 @@ public:
     void setTokensToParse(std::vector<Token> tokens);
 
 private:
-    std::vector<Token> tokens_;
-    int position_;
+    std::vector<Token> _tokens;
+    int _position;
 
     bool isValidTokenSequence(); //return true if token sequence is a valid and there is no error tokens
-    void filterErrorTokens(); //deletes all error tokens from tokens_
+    void filterErrorTokens(); //deletes all error tokens from _tokens
     
 };

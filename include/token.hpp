@@ -31,8 +31,8 @@ public:
 	static std::string tokenTypeToString(TokenType t);
 
 private:
-	TokenType type_;
-	std::string lexeme_;
+	TokenType _type;
+	std::string _lexeme;
 };
 
 void printTokens(std::vector<Token> tokens);
