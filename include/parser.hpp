@@ -2,30 +2,39 @@
 
 #include "token.hpp"
 #include "lexer.hpp"
+#include "ast.hpp"
 
 #include <string>
 #include <vector>
+#include <stack>
 #include <iostream>
+
+//TODO: Error processing
+
+enum class Precedece {
+    Min,
+    Term, 
+    Factor, 
+    Expression,
+    Max
+};
+
 
 
 class Parser {
 public:
-    Parser(const std::vector<Token>& tokens) : tokens_(tokens), current_(0) {}
+    Parser(std::vector<Token>& tokens);
 
-    ASTNode* parse() {
-        //return parseExpression();
-    }
-
-    double Evaluate();
+    std::unique_ptr<ASTNode> toAST(std::vector<Token> tokens); //use to construct AST 
+    std::vector<Token> toRPN(std::vector<Token> tokens); //use to convert vector to the RPN - reverce polish notation
+    
+    void setTokensToParse(std::vector<Token> tokens);
 
 private:
     std::vector<Token> tokens_;
-    int current_;
+    int position_;
+
+    bool isValidTokenSequence(); //return true if token sequence is a valid and there is no error tokens
+    void filterErrorTokens(); //deletes all error tokens from tokens_
+    
 };
-
-class ASTNode {
-public:
-    virtual ~ASTNode() {}
-};
-
-

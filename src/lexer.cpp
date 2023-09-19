@@ -1,7 +1,7 @@
 #include "lexer.hpp"
 
 /*Constructor*/
-Lexer::Lexer(const std::string& input) : input_(input), position_(0) {};
+Lexer::Lexer(std::string& input) : input_(input), position_(0) {};
 
 /*Public*/
 std::vector<Token> Lexer::tokenize() {
@@ -27,15 +27,19 @@ void Lexer::skipWhitespace() {
 		advance();
 	}
 }
-
-void Lexer::setPosition(int p) {position_ = p;}
 char Lexer::getCurrentChar() const {
 	return input_[position_];
 };
+void Lexer::setPosition(int p) {position_ = p;}
+void Lexer::setInput(const std::string& input) {input_ = input;};
 
 Token Lexer::nextToken() {
 	skipWhitespace();
 	char c = getCurrentChar();
+	if (c == '\0') {
+		return Token(TokenType::EoF, "EOF"); // Return an EoF token
+	}
+
 
 	if (c == '\0') {
 		return Token(TokenType::EoF, "EOF"); // Return an EoF token
@@ -71,13 +75,11 @@ Token Lexer::nextToken() {
 				return parseIdentyfier();
 			}
 	}
-	return errorToken();
+	return parseError();
 }
 Token Lexer::parseStar() {
 	/*To support both^ and **notation for the pow we need to check
 	if we have two stars in a row. If they are then we return a caret token*/
-
-	skipWhitespace();
 	if (getCurrentChar() != '*') {
 		return Token(TokenType::Star, "*");
 	}
@@ -133,7 +135,7 @@ Token Lexer::parseIdentyfier() {
 	Token token(TokenType::Ident, lexeme);
 	return token;
 }
-Token Lexer::errorToken() {
+Token Lexer::parseError() {
 	Token error(TokenType::Error, std::string(1, getCurrentChar()));
 	advance();
 	return error;
