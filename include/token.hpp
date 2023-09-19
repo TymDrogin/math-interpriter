@@ -19,8 +19,7 @@ enum class TokenType {
 	TokenType_MAX,
 };
 
-class Token
-{
+class Token {
 public:
 	Token(TokenType t, const std::string& l);
 
