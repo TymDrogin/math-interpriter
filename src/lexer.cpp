@@ -36,10 +36,6 @@ void Lexer::setInput(const std::string& input) {_input = input;};
 Token Lexer::nextToken() {
 	skipWhitespace();
 	char c = getCurrentChar();
-	if (c == '\0') {
-		return Token(TokenType::EoF, "EOF"); // Return an EoF token
-	}
-
 
 	if (c == '\0') {
 		return Token(TokenType::EoF, "EOF"); // Return an EoF token
