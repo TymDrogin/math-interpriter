@@ -15,7 +15,7 @@ class Parser {
 public:
     explicit Parser(std::vector<Token>& tokens);
 
-    std::unique_ptr<ASTNode> toAST(); //use to construct AST 
+    std::unique_ptr<ASTNode> toAST();
     std::vector<Token> toRPN();
 
 private:
