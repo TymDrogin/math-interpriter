@@ -6,12 +6,12 @@
 #include <cctype>
 #include <memory>
 
+
+// TODO: Lexing can be done with regex 
 class Lexer {
 public:
 	Lexer(std::string& input);
 	std::vector<Token> tokenize();
-
-	void setInput(const std::string& input); //sets new string to tokenize
 
 private:
 	std::string _input; // input string in format "2+3*(4-2)"; // input string in format "2+3*(4-2)"
@@ -24,7 +24,15 @@ private:
 
 	Token nextToken(); 
 	Token parseStar();
+
 	Token parseNumber();
+
+	//TODO: add support For pi, e, g, and other constants 
+	//TODO: add parsing of a functions like sin cos etc
 	Token parseIdentyfier();
 	Token parseError();
 };
+
+//class RegexLexer {
+
+//};

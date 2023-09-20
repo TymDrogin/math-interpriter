@@ -1,45 +1,117 @@
 #include "parser.hpp"
 /* Constructor */
-Parser::Parser(std::vector<Token>& tokens) : _tokens(tokens), _position(0) {};
+Parser::Parser(std::vector<Token>& tokens) : _tokens(tokens), _current(0) {};
 
 /* Public*/
+std::unique_ptr<ASTNode> Parser::toAST() {
+	//filterErrorTokens();
+	//isValidTokenSequence();
+	std::unique_ptr<ASTNode> result = expression();
 
-std::unique_ptr<ASTNode> Parser::toAST(std::vector<Token> tokens) {
-	return std::unique_ptr<ASTNode>();
-}
-std::vector<Token> Parser::toRPN(std::vector<Token> tokens) {
-	filterErrorTokens();
-	isValidTokenSequence();
-	
-	std::vector<Token> outputQueue;
-	std::stack<Token> operatorStack;
-	
-	for (auto t : tokens) {
-		if (t.getType() == TokenType::Number) {
-			outputQueue.push_back(t);
-		}
-		else {
-			operatorStack.push(t);
-		}
+	if (peek().getType() != TokenType::EoF) {
+		std::invalid_argument("Invalid expression, can't evaluate");
 	}
+	return result;
 
 }
 
-void Parser::setTokensToParse(std::vector<Token> tokens) { _tokens = tokens; _position = 0;};
-
-
-/* Privat*/
-
-bool Parser::isValidTokenSequence()
-{
-	return false;
+/* Private */
+void Parser::advance() { _current++;}
+Token Parser::peek(){return _tokens[_current];}
+Token Parser::previous() {
+	if (_current - 1 != 0) {
+		return _tokens[_current - 1];
+	} else {
+		std::invalid_argument("Trying to peek token on the index less then 0");
+	}
 }
-void Parser::filterErrorTokens(){
-	// Iterate through the tokens and remove any tokens that are considered errors
-	auto it = std::remove_if(_tokens.begin(), _tokens.end(), [](const Token& token) {
-		return token.getType() == TokenType::Error;
-		});
-
-	// Erase the removed tokens
-	_tokens.erase(it, _tokens.end());
+bool Parser::match(TokenType type) {
+	if (peek().getType() == TokenType::EoF) {
+		return false;
+	}
+	else {
+		return peek().getType() == type;
+	}
 }
+
+//TODO: PARENTIERS PARSING
+std::unique_ptr<ASTNode> Parser::expression() {
+	std::unique_ptr<ASTNode> left = term();
+
+	while (match(TokenType::Plus) || match(TokenType::Minus)) {
+		Token oper = peek(); //get the operator token
+		advance(); //get to the next token
+		std::unique_ptr<ASTNode> right = term(); //parse right side 
+		left = std::make_unique<BinaryOperationNode>(oper, std::move(left), std::move(right));
+	}
+	return left;
+}
+std::unique_ptr<ASTNode> Parser::term() {
+	std::unique_ptr<ASTNode> left = factor();
+
+	while (match(TokenType::Star) || match(TokenType::Slash)) {
+		Token oper = peek(); //get the operator token
+		advance(); //get to the next token
+		std::unique_ptr<ASTNode> right = factor(); //parse right side 
+		left = std::make_unique<BinaryOperationNode>(oper, std::move(left), std::move(right));
+	}
+	return left;	
+}
+std::unique_ptr<ASTNode> Parser::factor() {
+	Token current_token = peek();
+
+	if (current_token.getType() == TokenType::Number) {
+		advance();
+		return std::make_unique<NumberNode>(current_token);
+	}
+	std::invalid_argument("Can't factor");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//std::vector<Token> Parser::toRPN(std::vector<Token> tokens) {
+//	filterErrorTokens();
+//	isValidTokenSequence();
+//	
+//	std::vector<Token> outputQueue;
+//	std::stack<Token> operatorStack;
+//	
+//	for (auto t : tokens) {
+//		if (t.getType() == TokenType::Number) {
+//			outputQueue.push_back(t);
+//		}
+//		else {
+//			operatorStack.push(t);
+//		}
+//	}
+//	
+//}
+
+
+
+//bool Parser::isValidTokenSequence()
+//{
+//	return false;
+//}
+//void Parser::filterErrorTokens(){
+//	// Iterate through the tokens and remove any tokens that are considered errors
+//	auto it = std::remove_if(_tokens.begin(), _tokens.end(), [](const Token& token) {
+//		return token.getType() == TokenType::Error;
+//		});
+//
+//	// Erase the removed tokens
+//	_tokens.erase(it, _tokens.end());
+//}

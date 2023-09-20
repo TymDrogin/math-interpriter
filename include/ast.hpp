@@ -23,12 +23,14 @@ enum class FunctionNodeType {
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
-
+    virtual double evaluate() = 0;
 };
 
 class NumberNode : public ASTNode {
 public:
     NumberNode(const Token &token);
+    double evaluate() override;
+    
 
 private:
     double _value;
@@ -38,7 +40,8 @@ private:
 
 class UnaryOperationNode : public ASTNode {
 public:
-    UnaryOperationNode(const Token& token, ASTNode* operand);
+    UnaryOperationNode(const Token& token, std::unique_ptr<ASTNode> operand);
+    double evaluate() override;
    
 private:
     const Token _token;
@@ -48,7 +51,8 @@ private:
 
 class BinaryOperationNode : public ASTNode {
 public:
-    BinaryOperationNode(const Token& token, ASTNode* left, ASTNode* right);
+    BinaryOperationNode(const Token& token, std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right);
+    double evaluate() override;
 
 private:
     const Token _token;

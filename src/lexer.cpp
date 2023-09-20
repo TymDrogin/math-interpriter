@@ -31,7 +31,6 @@ char Lexer::getCurrentChar() const {
 	return _input[_position];
 };
 void Lexer::setPosition(int p) {_position = p;}
-void Lexer::setInput(const std::string& input) {_input = input;};
 
 Token Lexer::nextToken() {
 	skipWhitespace();
@@ -124,10 +123,15 @@ Token Lexer::parseNumber() {
 Token Lexer::parseIdentyfier() {
 	std::string lexeme;
 
+	
+
 	while (isalpha(getCurrentChar()) || isdigit(getCurrentChar())) {
 		lexeme += getCurrentChar();
 		advance();
+		
+		//if lexeme is in constants return Token constant with value 
 	}
+
 	Token token(TokenType::Ident, lexeme);
 	return token;
 }
