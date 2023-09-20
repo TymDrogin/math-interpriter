@@ -14,7 +14,7 @@ public:
 	std::vector<Token> tokenize();
 
 private:
-	std::string _input; // input string in format "2+3*(4-2)"; // input string in format "2+3*(4-2)"
+	std::string _input; // input string in format "2+3*(4-2)"; 
 	int _position; //current lexing position
 
 	void advance(); //increment position by 1
