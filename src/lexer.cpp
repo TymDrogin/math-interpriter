@@ -39,7 +39,6 @@ Token Lexer::nextToken() {
 	if (c == '\0') {
 		return Token(TokenType::EoF, "EOF"); // Return an EoF token
 	}
-
 	switch(c) {
 		case '+':
 			advance();
@@ -67,7 +66,7 @@ Token Lexer::nextToken() {
 				return parseNumber();
 			}
 			else if (isalpha(c)) {
-				return parseIdentyfier();
+				return parseIdentifier();
 			}
 	}
 	return parseError();
@@ -120,15 +119,12 @@ Token Lexer::parseNumber() {
 	Token token(TokenType::Number, lexeme);
 	return token;
 }
-Token Lexer::parseIdentyfier() {
+Token Lexer::parseIdentifier() {
 	std::string lexeme;
-
-	
 
 	while (isalpha(getCurrentChar()) || isdigit(getCurrentChar())) {
 		lexeme += getCurrentChar();
 		advance();
-		
 		//if lexeme is in constants return Token constant with value 
 	}
 

@@ -19,7 +19,7 @@ enum class TokenType {
 	Comma,
 };
 
-// For the logic go to Lexer::parseIdentyfier() or NumberNode
+// For the logic go to Lexer::parseIdentifier() or NumberNode
 const std::map<std::string, double> constants = {
 	   {"pi", 3.14159265359},
 	   {"e", 2.71828182846},
@@ -33,14 +33,13 @@ public:
 
 	void print() const;
 
-	TokenType getType() const;
-	std::string getLexeme() const;
+    [[nodiscard]] TokenType getType() const;
+    [[nodiscard]] std::string getLexeme() const;
 
-	static std::string tokenTypeToString(TokenType t);
+    static std::string tokenTypeToString(TokenType t);
 
 private:
 	TokenType _type;
 	std::string _lexeme;
 };
-
 void printTokens(std::vector<Token> tokens);

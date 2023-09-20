@@ -9,10 +9,27 @@ std::unique_ptr<ASTNode> Parser::toAST() {
 	std::unique_ptr<ASTNode> result = expression();
 
 	if (peek().getType() != TokenType::EoF) {
-		std::invalid_argument("Invalid expression, can't evaluate");
+		throw std::runtime_error("Invalid expression, can't evaluate");
 	}
+    setCurrent(0);
 	return result;
+}
+std::vector<Token> Parser::toRPN() {
+	//filterErrorTokens();
+	//isValidTokenSequence();
 
+	std::vector<Token> outputQueue;
+	std::stack<Token> operatorStack;
+
+	for (const auto& t : _tokens) {
+		if (t.getType() == TokenType::Number) {
+			outputQueue.push_back(t);
+		}
+		else {
+			operatorStack.push(t);
+		}
+	}
+	return outputQueue;
 }
 
 /* Private */
@@ -22,19 +39,21 @@ Token Parser::previous() {
 	if (_current - 1 != 0) {
 		return _tokens[_current - 1];
 	} else {
-		std::invalid_argument("Trying to peek token on the index less then 0");
+		throw std::invalid_argument("Trying to peek token on the index less then 0");
 	}
+}
+void Parser::setCurrent(int current) {
+    _current = current;
 }
 bool Parser::match(TokenType type) {
-	if (peek().getType() == TokenType::EoF) {
-		return false;
-	}
-	else {
-		return peek().getType() == type;
-	}
+    if (peek().getType() == TokenType::EoF) {
+        return false;
+    }
+    else {
+        return peek().getType() == type;
+    }
 }
 
-//TODO: PARENTIERS PARSING
 std::unique_ptr<ASTNode> Parser::expression() {
 	std::unique_ptr<ASTNode> left = term();
 
@@ -42,7 +61,7 @@ std::unique_ptr<ASTNode> Parser::expression() {
 		Token oper = peek(); //get the operator token
 		advance(); //get to the next token
 		std::unique_ptr<ASTNode> right = term(); //parse right side 
-		left = std::make_unique<BinaryOperationNode>(oper, std::move(left), std::move(right));
+		left = std::make_unique<BinaryOpNode>(oper, std::move(left), std::move(right));
 	}
 	return left;
 }
@@ -53,53 +72,31 @@ std::unique_ptr<ASTNode> Parser::term() {
 		Token oper = peek(); //get the operator token
 		advance(); //get to the next token
 		std::unique_ptr<ASTNode> right = factor(); //parse right side 
-		left = std::make_unique<BinaryOperationNode>(oper, std::move(left), std::move(right));
+		left = std::make_unique<BinaryOpNode>(oper, std::move(left), std::move(right));
 	}
 	return left;	
 }
 std::unique_ptr<ASTNode> Parser::factor() {
 	Token current_token = peek();
 
-	if (current_token.getType() == TokenType::Number) {
+    // if current node is terminal(number) return
+	if (match(TokenType::Number)) {
 		advance();
 		return std::make_unique<NumberNode>(current_token);
-	}
-	std::invalid_argument("Can't factor");
+
+    // else if LPAREN recursively parse expression
+	} else if(match(TokenType::OpenParenthesis)) {
+        advance();
+        std::unique_ptr<ASTNode> innerExpression = expression();
+        //if no closing parenthesis rise an error
+        if (!match(TokenType::CloseParenthesis)) {
+            throw std::runtime_error("Expected ')' after expression.");
+        }
+        advance();
+        return innerExpression;
+    }
+	throw std::invalid_argument("Can't factor");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//std::vector<Token> Parser::toRPN(std::vector<Token> tokens) {
-//	filterErrorTokens();
-//	isValidTokenSequence();
-//	
-//	std::vector<Token> outputQueue;
-//	std::stack<Token> operatorStack;
-//	
-//	for (auto t : tokens) {
-//		if (t.getType() == TokenType::Number) {
-//			outputQueue.push_back(t);
-//		}
-//		else {
-//			operatorStack.push(t);
-//		}
-//	}
-//	
-//}
-
 
 
 //bool Parser::isValidTokenSequence()

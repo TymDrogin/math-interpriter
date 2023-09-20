@@ -19,7 +19,7 @@ private:
 
 	void advance(); //increment position by 1
 	void skipWhitespace();
-	char getCurrentChar() const;
+	[[nodiscard]] char getCurrentChar() const;
 	void setPosition(int p);
 
 	Token nextToken(); 
@@ -29,7 +29,7 @@ private:
 
 	//TODO: add support For pi, e, g, and other constants 
 	//TODO: add parsing of a functions like sin cos etc
-	Token parseIdentyfier();
+	Token parseIdentifier();
 	Token parseError();
 };
 

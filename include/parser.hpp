@@ -13,11 +13,10 @@
 //TODO: Error processing
 class Parser {
 public:
-    Parser(std::vector<Token>& tokens);
+    explicit Parser(std::vector<Token>& tokens);
 
     std::unique_ptr<ASTNode> toAST(); //use to construct AST 
-
-    //std::vector<Token> toRPN(std::vector<Token> tokens); //use to convert vector to the RPN - reverce polish notation 
+    std::vector<Token> toRPN();
 
 private:
     std::vector<Token> _tokens;
@@ -25,14 +24,15 @@ private:
 
     void advance();
     Token peek();
-    Token previous();
+    void setCurrent(int current);
     bool match(TokenType type);
 
-    //bool isValidTokenSequence(); //return true if token sequence is a valid and there is no error tokens
-    //void filterErrorTokens(); //deletes all error tokens from _tokens
 
     std::unique_ptr<ASTNode> expression();
     std::unique_ptr<ASTNode> term();
     std::unique_ptr<ASTNode> factor();
 
 };
+
+//bool isValidTokenSequence(); //return true if token sequence is a valid and there is no error tokens
+//void filterErrorTokens(); //deletes all error tokens from _tokens

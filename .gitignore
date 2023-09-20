@@ -33,6 +33,7 @@
 
 # IDE
 .vs/
+.idea/
 
 # Compiler out
 /out/

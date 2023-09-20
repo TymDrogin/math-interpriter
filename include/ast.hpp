@@ -3,14 +3,16 @@
 #include "token.hpp"
 #include <memory>
 #include <stdexcept>
+#include <cmath>
+#include <utility>
 
 enum class NumberNodeType {
     Int,    Dec,
 };
-enum class UnaryOperatorNodeType {
+enum class UnaryOpNodeType {
     Pos,    Neg,
 };
-enum class BinaryOperatorNodeType {
+enum class BinaryOpNodeType {
     Add,    Sub,
     Mul,    Div,
     Pow,   
@@ -28,35 +30,35 @@ public:
 
 class NumberNode : public ASTNode {
 public:
-    NumberNode(const Token &token);
+    explicit NumberNode(const Token &token);
     double evaluate() override;
     
 
 private:
-    double _value;
-    NumberNodeType _type;
     const Token _token;
+    NumberNodeType _type;
+    double _value;
 };
 
-class UnaryOperationNode : public ASTNode {
+class UnaryOpNode : public ASTNode {
 public:
-    UnaryOperationNode(const Token& token, std::unique_ptr<ASTNode> operand);
+    UnaryOpNode(const Token &token, std::unique_ptr<ASTNode> operand);
     double evaluate() override;
    
 private:
     const Token _token;
-    UnaryOperatorNodeType _type;
+    UnaryOpNodeType _type;
     std::unique_ptr<ASTNode> _operand;
 };
 
-class BinaryOperationNode : public ASTNode {
+class BinaryOpNode : public ASTNode {
 public:
-    BinaryOperationNode(const Token& token, std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right);
+    BinaryOpNode(const Token &token, std::unique_ptr<ASTNode> left, std::unique_ptr<ASTNode> right);
     double evaluate() override;
 
 private:
     const Token _token;
-    BinaryOperatorNodeType _type;
+    BinaryOpNodeType _type;
     std::unique_ptr<ASTNode> _left;
     std::unique_ptr<ASTNode> _right;
 };

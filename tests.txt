@@ -1,0 +1,5 @@
+
+Expression used in testing
+((4 + 3) * (6 - (2 + 1))) / (5 - 2)
+
+Time with no static methods Elapsed time: 0.0094128 seconds
